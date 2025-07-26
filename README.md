@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 📦 ragstack-gpt-observability
 A production-grade Retrieval-Augmented Generation (RAG) system powered by OpenAI's GPT-4, Kafka-based metadata logging, and observability using Prometheus and Grafana. Built with FastAPI, LangChain, and ChromaDB, this project serves as an intelligent query engine that combines LLM capabilities with your private data and full-stack monitoring.
 
@@ -108,3 +109,6 @@ Generates MCP metadata and sends it to Kafka topic: query-events
 
  Kubernetes deployment using Helm & ArgoCD
 
+=======
+# LLM-RAG-Query-LoggerWithKafka
+>>>>>>> 6f44bc883bc5a2358425895562d4f6688bf70136
