@@ -1,114 +1,112 @@
-<<<<<<< HEAD
 📦 ragstack-gpt-observability
 A production-grade Retrieval-Augmented Generation (RAG) system powered by OpenAI's GPT-4, Kafka-based metadata logging, and observability using Prometheus and Grafana. Built with FastAPI, LangChain, and ChromaDB, this project serves as an intelligent query engine that combines LLM capabilities with your private data and full-stack monitoring.
 
 🚀 Features Implemented
-✅ 1. LLM-Powered Query Engine (FastAPI + GPT-4)
+
+👉 1. LLM-Powered Query Engine (FastAPI + GPT-4)
+
 Built with FastAPI to expose a /query endpoint
 
 Accepts user input and generates intelligent answers using OpenAI’s GPT-4
 
-Integrated with LangChain for seamless prompt handling
+Integrated with LangChain for prompt templating and inference orchestration
 
-✅ 2. Retrieval-Augmented Generation (RAG)
-Uses Chroma vector database to store and retrieve your private data
+👉 2. Retrieval-Augmented Generation (RAG)
 
-Implements a RAG pipeline: retrieve relevant chunks → augment question → send to GPT-4
+Stores private documents in Chroma vector database
 
-Embedded with OpenAIEmbeddings for document vectorization
+Retrieves top-k relevant chunks, augments the query, and forwards it to GPT-4
 
-Custom prompt template provided to control LLM context behavior
+Uses OpenAIEmbeddings for vectorization and similarity search
 
-✅ 3. RAG Engine (rag_engine.py)
-Modular engine handles end-to-end: retrieval → prompt construction → GPT-4 call
+👉 3. RAG Engine (rag_engine.py)
 
-Automatically extracts source document IDs (doc_ids) used for response
+Executes the full pipeline: embeddings → retrieval → prompt assembly → GPT call
 
-Configurable via environment variables (model version, top-k, etc.)
+Returns both the answer and the document IDs used
 
-✅ 4. Metadata Generation Protocol (MCP)
-Every user query is wrapped in a structured MCP payload containing:
+Environment-driven configuration (e.g., top-k, model version)
 
-user ID, request ID, timestamp
+👉 4. Metadata Control Protocol (MCP)
 
-prompt version, model version, document IDs used
+Wraps each query with structured metadata including:
 
-Centralized in mcp.py for reusability
+request_id, user_id, timestamp
 
-✅ 5. Kafka Integration for Query Events
-kafka_producer.py sends MCP metadata to Kafka topic: query-events
+document_ids, prompt version, model version
 
-Decouples logging/analytics from core app logic
+Centralized logic in mcp.py
 
-Ensures real-time event stream for monitoring, tracing, and alerting
+👉 5. Kafka Integration for Query Events
 
-✅ 6. Production-Ready Code Structure
-backend directory contains all core services
+kafka_producer.py emits query metadata to a Kafka topic: query-events
 
-.env driven configuration
+Enables downstream systems to log, trace, or react to user queries
 
-Scalable structure for multi-service support (indexer, logger, dashboards, etc.)
+Fully decouples analytics from the application logic
 
-Ready to extend with Docker, Kubernetes, ArgoCD, and CI/CD
+👉 6. Requirements & Dependency Management
+
+requirements.txt defines all Python dependencies
+
+python-dotenv used to manage environment variables
+
+👉 7. Production-Ready Project Layout
+
+Modular backend structure
+
+Environment variable-driven configuration using .env.example
+
+Supports Docker, Kubernetes, and ArgoCD deployment strategies
 
 📁 Folder Structure
+
 llm-rag-app/
 ├── backend/
-│ ├── main.py ← FastAPI app & /query endpoint
-│ ├── rag_engine.py ← Executes the full RAG pipeline
-│ ├── mcp.py ← Generates structured metadata payloads
-│ ├── kafka_producer.py ← Publishes MCP events to Kafka
-│ ├── requirements.txt
-│ └── .env.example
+│   ├── main.py              # FastAPI app & /query endpoint
+│   ├── rag_engine.py        # Executes RAG pipeline
+│   ├── mcp.py               # Metadata packaging
+│   ├── kafka_producer.py    # Kafka publisher for events
+│   ├── requirements.txt     # Python dependencies
+│   └── .env.example         # Sample environment variables
 ├── deploy/
-│ ├── docker-compose.yml ← (To be added) Kafka + backend + Chroma setup
-│ ├── helm/ ← (Future) Kubernetes Helm charts
-│ └── argocd/ ← (Future) ArgoCD deployment manifests
+│   ├── docker-compose.yml   # (upcoming) Local test stack
+│   ├── helm/                # (planned) Kubernetes Helm Charts
+│   └── argocd/              # (planned) ArgoCD GitOps config
 └── README.md
 
 🧠 Tech Stack
-🔗 LangChain (RAG logic)
 
-🧠 OpenAI GPT-4 (LLM inference)
+OpenAI GPT-4 (LLM inference)
 
-💾 ChromaDB (vector storage)
+LangChain (RAG orchestration)
 
-🧰 FastAPI (API server)
+ChromaDB (vector similarity DB)
 
-📨 Apache Kafka (event broker)
+FastAPI (web server framework)
 
-📊 Prometheus + Grafana (monitoring/tracing)
+Kafka (message broker for query metadata)
 
-🧾 Loki (query logging - future)
+Prometheus + Grafana (observability)
 
-📦 Docker, ArgoCD (deployment)
+Loki (future: logging)
 
-🧪 Example Query Flow
-User sends a POST /query with: "What is Retrieval-Augmented Generation?"
+Docker, Kubernetes, ArgoCD (infrastructure)
 
-FastAPI calls rag_engine.get_answer()
+🔬 Example Query Flow
 
-Embeds question
+User sends POST to /query with: “What is Retrieval-Augmented Generation?”
 
-Retrieves relevant docs from ChromaDB
+FastAPI app calls rag_engine.get_answer()
 
-Constructs prompt and calls GPT-4
+Question is embedded
 
-Returns the answer
+ChromaDB retrieves relevant chunks
 
-Generates MCP metadata and sends it to Kafka topic: query-events
+Prompt is constructed and sent to OpenAI (GPT-4)
 
-📦 Next Steps (in progress)
- Vector Indexer microservice (Go/Kafka)
+GPT-4 response is returned
 
- Real-time Logger service with Loki
+MCP metadata is generated
 
- Grafana dashboard for query stats
-
- Docker Compose setup for local testing
-
- Kubernetes deployment using Helm & ArgoCD
-
-=======
-# LLM-RAG-Query-LoggerWithKafka
->>>>>>> 6f44bc883bc5a2358425895562d4f6688bf70136
+Kafka producer publishes metadata to topic query-events
